@@ -9,6 +9,7 @@ from django.core.files.base import ContentFile
 from django_webdav_storage.storage import WebDavStorage
 from django.utils import six
 import uuid
+import os
 
 
 LAZY_FOX = 'The *quick* brown fox jumps over the lazy dog'
@@ -92,10 +93,10 @@ class TestUrlMethod(TestBase):
     """
     Tests for `url` storage method
     """
-    url = 'http://webdav.marazmiki.com'
+    url = os.getenv('WEBDAV_PUBLIC_URL', 'http://127.0.0.1')
 
     def _assert(self, url=''):
-        with self.settings(SELECTEL_CONTAINER_URL=self.url + url):
+        with self.settings(WEBDAV_PUBLIC_URL=self.url + url):
             storage = WebDavStorage()
             self.assertEquals(self.url, storage.get_base_url())
 

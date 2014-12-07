@@ -8,13 +8,14 @@ python:
 env:
   - DJANGO=django==1.6.8
   - DJANGO=django==1.7.1
+  - WEBDAV_URL=http://127.0.0.1
+  - WEBDAV_PUBLIC_URL=http://127.0.0.1
 
 
 install:
   - sudo apt-get install -y nginx-extras
   - sudo mkdir /webdav
-  - sudo mkdir /webdav/_tmp
-  - sudo chmod -R 0700 /webdav
+  - sudo chmod -R 0777 /webdav
   - sudo cp ./webdav.conf /etc/nginx/sites-enabled/webdav.conf
   - sudo service nginx restart
   - pip install -q $DJANGO

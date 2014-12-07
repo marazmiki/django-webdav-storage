@@ -29,8 +29,8 @@ settings.configure(
             'NAME': ':MEMORY:'
         }
     },
-    WEBDAV_URL='http://127.0.0.1/',
-    WEBDAV_PUBLIC_URL='http://127.0.0.1/',
+    WEBDAV_URL=os.getenv('WEBDAV_URL', 'http://127.0.0.1/'),
+    WEBDAV_PUBLIC_URL=os.getenv('WEBDAV_PUBLIC_URL', 'http://127.0.0.1/'),
 )
 
 
