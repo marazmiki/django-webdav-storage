@@ -11,7 +11,7 @@ env:
 
 
 install:
-  - apt-get install -y nginx-extras
+  - sudo apt-get install -y nginx-extras
   - sudo mkdir /webdav
   - sudo mkdir /webdav/_tmp
   - sudo chmod -R 0700 /webdav
