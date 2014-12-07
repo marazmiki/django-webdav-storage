@@ -38,6 +38,7 @@ if __name__ == '__main__':
           description=DESCRIPTION,
           author='Mikhail Porokhovnichenko',
           author_email='marazmiki@gmail.com',
+          url='https://github.com/marazmiki/django-webdav-storage',
           version=version(),
           long_description=long_description(),
           packages=find_packages(),
