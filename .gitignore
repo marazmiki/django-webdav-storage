@@ -1,0 +1,9 @@
+.env
+.env34
+*.pyc
+*.coverage
+htmlcov
+*.egg/
+*.egg-info/
+build
+dist
