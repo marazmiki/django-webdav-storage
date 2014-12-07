@@ -8,9 +8,6 @@ python:
 env:
   - DJANGO=django==1.6.8
   - DJANGO=django==1.7.1
-  - WEBDAV_URL=http://127.0.0.1
-  - WEBDAV_PUBLIC_URL=http://127.0.0.1
-
 
 install:
   - sudo apt-get install -y nginx-extras
