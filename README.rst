@@ -36,8 +36,8 @@ Installation
 
 .. code:: python
 
-    WEBDAV_URL='http://webdav.marazmiki.com/',
-    WEBDAV_PUBLIC_URL='http://webdav.marazmiki.com/'
+    WEBDAV_URL='http://webdav.example.com/',
+    WEBDAV_PUBLIC_URL='http://webdav.example.com/'
 
 3. Set the webdav storage class as default:
 
