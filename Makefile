@@ -7,7 +7,9 @@ test:
 
 
 release:
-	python setup.py sdist --format=zip,bztar,gztar register upload
+	python setup.py sdist --format=zip,bztar,gztar
+	python setup.py bdist_wheel
+	python setup.py register upload
 
 
 flake8:

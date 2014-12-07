@@ -70,10 +70,6 @@ WebDAV nginx example
 
         root           /usr/share/nginx/webdav;
 
-        location /_tmp/ {
-            deny all;
-        }
-
         location / {
             client_max_body_size    10m;
             client_body_temp_path   /tmp;
