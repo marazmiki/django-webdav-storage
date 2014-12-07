@@ -36,14 +36,63 @@ Installation
 
 .. code:: python
 
-    WEBDAV_URL='http://webdav.example.com/',
-    WEBDAV_PUBLIC_URL='http://webdav.example.com/'
+    WEBDAV_URL = 'http://webdav.example.com/',
+    WEBDAV_PUBLIC_URL = 'http://webdav.example.com/'
+
+If you want use HTTP Basic authorization to webdav access, you can specify
+your credentials like that:
+
+.. code:: python
+
+    WEBDAV_URL = 'http://johndoe:secret@webdav.example.com/'
+
 
 3. Set the webdav storage class as default:
 
 .. code:: python
 
     DEFAULT_FILE_STORAGE = 'django_webdav_storage.storage.WebDavStorage'
+
+
+WebDAV nginx example
+--------------------
+
+.. code:: nginx
+
+    server {
+        listen 80;
+        charset        utf-8;
+        server_tokens  off;
+        server_name    webdav.example.com;
+
+        access_log     /var/log/nginx/webdav_access.log;
+        error_log      /var/log/nginx/webdav_error.log;
+
+        root           /usr/share/nginx/webdav;
+
+        location /_tmp/ {
+            deny all;
+        }
+
+        location / {
+            client_max_body_size    10m;
+            client_body_temp_path   /tmp;
+            create_full_put_path    on;
+
+            dav_methods             PUT DELETE MKCOL COPY MOVE;
+            dav_access              user:rw   group:r   all:r;
+
+            satisfy  any;
+
+            limit_except GET {
+                allow           127.0.0.1/32;
+                deny            all;
+                auth_basic 'My WebDAV area';
+                auth_basic_user_file /usr/share/nginx/.htpasswd;
+            }
+        }
+    }
+
 
 
 Caveats
