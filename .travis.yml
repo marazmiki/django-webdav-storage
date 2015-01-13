@@ -10,6 +10,7 @@ env:
   - DJANGO=django==1.7.2
 
 install:
+  - sudo apt-get update
   - sudo apt-get install -y nginx-extras
   - sudo mkdir /webdav
   - sudo chmod -R 0777 /webdav
