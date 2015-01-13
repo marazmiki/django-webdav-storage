@@ -6,8 +6,8 @@ python:
   - "3.4"
 
 env:
-  - DJANGO=django==1.6.8
-  - DJANGO=django==1.7.1
+  - DJANGO=django==1.6.9
+  - DJANGO=django==1.7.2
 
 install:
   - sudo apt-get install -y nginx-extras
