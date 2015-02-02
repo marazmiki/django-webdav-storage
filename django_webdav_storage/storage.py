@@ -25,10 +25,10 @@ class WebDavStorage(StorageBase):
         if not self.public_url:
             self.public_url = self.webdav_url
 
-    def set_public_url(self, **kwargs):
+    def set_webdav_url(self, **kwargs):
         return kwargs.get('webdav_url') or setting('WEBDAV_URL')
 
-    def set_webdav_url(self, **kwargs):
+    def set_public_url(self, **kwargs):
         return kwargs.get('public_url') or setting('WEBDAV_PUBLIC_URL')
 
     def get_requests_instance(self, **kwargs):
