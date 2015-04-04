@@ -64,9 +64,15 @@ your credentials like that:
 
     DEFAULT_FILE_STORAGE = 'django_webdav_storage.storage.WebDavStorage'
 
+4. If your webdav backend can't recursively create path (e.g. `nginx can do this <http://nginx.org/en/docs/http/ngx_http_dav_module.html#create_full_put_path>`_, while apache can't), set the `WEBDAV_RECURSIVE_MKCOL` variable to `True`:
 
-WebDAV nginx example
---------------------
+.. code:: python
+
+    WEBDAV_RECURSIVE_MKCOL = True
+
+
+The nginx webdav configuration example
+--------------------------------------
 
 .. code:: nginx
 

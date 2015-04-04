@@ -6,7 +6,7 @@ CHANGELOG
 ---
 
 * Updated head django versions;
-* Support of Django 1.8x (RC at this moment);
+* Support of Django 1.8x;
 * Explicit directory tree creation (MKCOL) now os optional -- thanks to Dmitriy Narkevich
 * Added missed self.webdav wrapper for MKCOL request
 
