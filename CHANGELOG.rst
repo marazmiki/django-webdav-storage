@@ -2,6 +2,12 @@
 CHANGELOG
 =========
 
+0.4.2
+-----
+
+* Update django versions
+
+
 0.4.1
 -----
 
