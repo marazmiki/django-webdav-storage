@@ -64,7 +64,8 @@ class WebDavStorage(StorageBase):
             with open(content.temporary_file_path(), 'rb') as f:
                 self.webdav('PUT', name, data=f)
         else:
-            self.webdav('PUT', name, data=content.chunks())
+            content.file.seek(0)
+            self.webdav('PUT', name, data=content.file)
         return name
 
     def delete(self, name):
