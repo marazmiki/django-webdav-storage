@@ -76,7 +76,7 @@ class TestSaveMethod(TestBase):
 
     def _make_memfile(self, filename, content):
         return InMemoryUploadedFile(
-            file=six.StringIO(content),
+            file=six.BytesIO(content),
             field_name='test_field',
             name='_save_new_file.txt',
             content_type='text/plain',
@@ -97,7 +97,7 @@ class TestSaveMethod(TestBase):
 
     def test_save_simplefile_ok(self):
         filename = self.session_id + '_save_new_file.txt'
-        content = 'test content one'
+        content = six.b('test content one')
 
         fileobj = self._make_simplefile(filename, content)
         self.storage.save(filename, fileobj)
@@ -106,7 +106,7 @@ class TestSaveMethod(TestBase):
 
     def test_save_simplefile_seeked_ok(self):
         filename = self.session_id + '_save_new_memsekfile.txt'
-        content = 'test content one'
+        content = six.b('test content one')
 
         fileobj = self._make_simplefile(filename, content)
         fileobj.seek(3)
@@ -117,7 +117,7 @@ class TestSaveMethod(TestBase):
 
     def test_save_memoryfile_ok(self):
         filename = self.session_id + '_save_new_file.txt'
-        content = 'test content one'
+        content = six.b('test content one')
 
         fileobj = self._make_memfile(filename, content)
         self.storage.save(filename, fileobj)
@@ -126,7 +126,7 @@ class TestSaveMethod(TestBase):
 
     def test_save_tempfile_ok(self):
         filename = self.session_id + '_save_new_file.txt'
-        content = 'test content'
+        content = six.b('test content')
         fileobj = self._make_tempfile(filename, content)
         self.storage.save(filename, fileobj)
 
@@ -135,7 +135,7 @@ class TestSaveMethod(TestBase):
 
     def test_save_memoryfile_seeked_ok(self):
         filename = self.session_id + '_save_new_file.txt'
-        content = 'test content one'
+        content = six.b('test content one')
 
         fileobj = self._make_memfile(filename, content)
         fileobj.seek(3)
@@ -146,7 +146,7 @@ class TestSaveMethod(TestBase):
 
     def test_save_tempfile_seeked_ok(self):
         filename = self.session_id + '_save_new_file.txt'
-        content = 'test content'
+        content = six.b('test content')
         fileobj = self._make_tempfile(filename, content)
         fileobj.seek(4)
 
