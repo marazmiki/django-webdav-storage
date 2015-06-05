@@ -59,7 +59,13 @@ class WebDavStorage(StorageBase):
                 self.webdav('MKCOL', '{0}/{1}'.format(coll_path,
                                                       directory))
                 coll_path += '/{}'.format(directory)
-        self.webdav('PUT', name, data=content)
+
+        if hasattr(content, 'temporary_file_path'):
+            with open(content.temporary_file_path(), 'rb') as f:
+                self.webdav('PUT', name, data=f)
+        else:
+            content.file.seek(0)
+            self.webdav('PUT', name, data=content.file)
         return name
 
     def delete(self, name):
