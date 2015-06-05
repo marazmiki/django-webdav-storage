@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from django.utils.module_loading import import_string
 from django.core.files.storage import Storage as StorageBase
 from django.core.files.base import ContentFile
 from django.conf import settings
@@ -19,6 +20,7 @@ class WebDavStorage(StorageBase):
         self.requests = self.get_requests_instance(**kwargs)
         self.webdav_url = self.set_webdav_url(**kwargs)
         self.public_url = self.set_public_url(**kwargs)
+        self.listdir = self.set_listdir(**kwargs)
 
         if not self.webdav_url:
             raise NotImplementedError('Please define webdav url')
@@ -30,6 +32,26 @@ class WebDavStorage(StorageBase):
 
     def set_public_url(self, **kwargs):
         return kwargs.get('public_url') or setting('WEBDAV_PUBLIC_URL')
+
+    def set_listdir(self, **kwargs):
+        dottedpath = kwargs.get(
+            'listing_backend',
+        ) or setting(
+            'WEBDAV_LISTING_BACKEND'
+        )
+
+        if dottedpath is None:
+            return self.listdir
+
+        listdir = import_string(dottedpath)
+        return lambda path: listdir(self, path)
+
+    def listdir(self, path):
+        raise NotImplementedError(
+            'Listing backend not configured. '
+            'Please set WEBDAV_LISTING_BACKEND '
+            'configuration option.'
+        )
 
     def get_requests_instance(self, **kwargs):
         return requests.Session()
