@@ -17,6 +17,9 @@ from django.core.files.uploadedfile import (
 import uuid
 import os
 
+override_settings = getattr(test, 'override_settings',
+                            test.utils.override_settings)
+
 
 LAZY_FOX = 'The *quick* brown fox jumps over the lazy dog'
 EMPTY_GIF = b'\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\xf0\x01\x00' \
@@ -68,7 +71,7 @@ class TestOverrideSettings(object):
                               second=getattr(self.storage, self.method)())
 
 
-@test.override_settings(
+@override_settings(
     WEBDAV_LISTING_BACKEND='django_webdav_storage.listing.nginx_autoindex',
 )
 class TestListdirMethodNginxAutoindex(TestBase):
