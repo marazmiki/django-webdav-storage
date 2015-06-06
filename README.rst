@@ -27,7 +27,7 @@ django-webdav-storage
     :target: https://pypi.python.org/pypi/django-webdav-storage/
     :alt: Supported Python versions
 
-This application allows you easily save media and static files into webdav storage.
+This application allows you to easily save media and static files into a webdav storage.
 
 Dependencies
 ------------
@@ -37,7 +37,7 @@ Dependencies
 Installation
 ------------
 
-1. Install the package
+1. Installing the package
 
 .. code:: bash
 
@@ -51,7 +51,7 @@ Installation
     WEBDAV_PUBLIC_URL = 'http://webdav.example.com/'
 
 If you want use HTTP Basic authorization to webdav access, you can specify
-your credentials like that:
+your credentials:
 
 .. code:: python
 
@@ -78,7 +78,7 @@ your credentials like that:
 
 Autoindex feature must be enabled in your nginx configuration for application servers (see example below). Be careful! Allowing autoindex for any user may lead to security and performance issues.
 
-Also, you may specify path to other function with the following interface:
+Also, you may specify path to other functions with the following interface:
 
 .. code:: python
 
@@ -139,4 +139,4 @@ The nginx webdav configuration example
 Caveats
 -------
 
-* In python 3.x ``ContentFile`` with text mode content (not binary one) will causes ``TypeError`` due ``requests`` restrictions
+* In python 3.x ``ContentFile`` with text mode content (not the binary one) will cause ``TypeError`` due to ``requests`` restrictions.
