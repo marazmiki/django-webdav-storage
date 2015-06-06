@@ -2,6 +2,11 @@
 CHANGELOG
 =========
 
+0.6
+---
+
+* Add directory listing feature (if webdav server supports it) — thanks to Matvei Kroglov
+
 0.5
 ---
 
