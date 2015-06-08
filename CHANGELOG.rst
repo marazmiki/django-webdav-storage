@@ -2,6 +2,11 @@
 CHANGELOG
 =========
 
+0.6.1
+-----
+
+* Cleanup code, remove unused code — thanks to Matvei Kroglov
+
 0.6
 ---
 
