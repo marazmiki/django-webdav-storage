@@ -55,22 +55,6 @@ class TestBase(test.TestCase):
         return ExistingFile(self, filename, content)
 
 
-class TestOverrideSettings(object):
-    """
-    Test cases for setting overrides
-    """
-    setting = ''
-    method = ''
-    value = None
-
-    def test_override_value(self):
-        value = self.value or 'new value'
-
-        with self.settings(**{self.setting: value}):
-            self.assertEquals(first=value,
-                              second=getattr(self.storage, self.method)())
-
-
 @override_settings(
     WEBDAV_LISTING_BACKEND='django_webdav_storage.listing.nginx_autoindex',
 )
@@ -299,18 +283,3 @@ class TestOpenMethod(TestBase):
             content = self.storage._open(f.filename, 'r')
             self.assertEquals(first=LAZY_FOX,
                               second=content.read())
-
-
-# class TestGetContainerNameMethod(TestOverrideSettings, TestBase):
-#    """
-#    Tests for `get_container_method` storage method
-#    """
-#    setting = 'SELECTEL_CONTAINER_NAME'
-#    method = 'get_container_name'
-
-    # def mount_requests_adapter(self, prefix, adapter):
-    # *def get_base_url(self):
-
-    # def _name(self, name):
-    # def _open(self, name, mode='rb'):
-    # def _save(self, name, content):
