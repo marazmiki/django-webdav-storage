@@ -80,6 +80,8 @@ class WebDavStorage(StorageBase):
         path_list = name.split('/')
         coll_path = self.webdav_url
 
+        headers = {'Content-Length': len(content)}
+
         if setting('WEBDAV_RECURSIVE_MKCOL', False):
             for directory in path_list[:-1]:
                 self.webdav('MKCOL', '{0}/{1}'.format(coll_path,
@@ -88,10 +90,10 @@ class WebDavStorage(StorageBase):
 
         if hasattr(content, 'temporary_file_path'):
             with open(content.temporary_file_path(), 'rb') as f:
-                self.webdav('PUT', name, data=f)
+                self.webdav('PUT', name, data=f, headers=headers)
         else:
             content.file.seek(0)
-            self.webdav('PUT', name, data=content.file)
+            self.webdav('PUT', name, data=content.file, headers=headers)
         return name
 
     def delete(self, name):
