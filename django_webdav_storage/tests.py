@@ -4,12 +4,21 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+import tempfile
+import requests.exceptions
+from contextlib2 import ExitStack
 from django import test
 from django.core.files.base import ContentFile
 from django_webdav_storage.storage import WebDavStorage
 from django.utils import six
+from django.core.files.uploadedfile import (
+    InMemoryUploadedFile, TemporaryUploadedFile,
+)
 import uuid
 import os
+
+override_settings = getattr(test, 'override_settings',
+                            test.utils.override_settings)
 
 
 LAZY_FOX = 'The *quick* brown fox jumps over the lazy dog'
@@ -46,20 +55,134 @@ class TestBase(test.TestCase):
         return ExistingFile(self, filename, content)
 
 
-class TestOverrideSettings(object):
-    """
-    Test cases for setting overrides
-    """
-    setting = ''
-    method = ''
-    value = None
+@override_settings(
+    WEBDAV_LISTING_BACKEND='django_webdav_storage.listing.nginx_autoindex',
+)
+class TestListdirMethodNginxAutoindex(TestBase):
 
-    def test_override_value(self):
-        value = self.value or 'new value'
+    def test_listdir_works(self):
+        root = 'test-list/'
 
-        with self.settings(**{self.setting: value}):
-            self.assertEquals(first=value,
-                              second=getattr(self.storage, self.method)())
+        with ExitStack() as stack:
+            stack.enter_context(self.existing_file(root + 'file.img'))
+            stack.enter_context(self.existing_file(root + 'hello.pdf'))
+            stack.enter_context(self.existing_file(root + 'hello/image.png'))
+            stack.enter_context(self.existing_file(root + 'hello/text.txt'))
+
+            dirs, files = self.storage.listdir(
+                "{0}_{1}".format(self.session_id, root))
+
+            self.assertSetEqual(
+                {f for f in files},
+                {b'file.img', b'hello.pdf'}
+            )
+            self.assertSetEqual(
+                {d for d in dirs},
+                {b'hello'},
+            )
+
+    def test_listdir_not_found(self):
+        with self.assertRaises(requests.exceptions.HTTPError) as e:
+            self.storage.listdir('_this_dir_does_not_exist/')
+
+        self.assertEqual(e.exception.response.status_code, 404)
+
+
+class TestListdirMethodNotConfigured(TestBase):
+
+    def test_listdir_raises_not_implemented(self):
+        with self.assertRaises(NotImplementedError):
+            self.storage.listdir('testdir')
+
+
+class TestSaveMethod(TestBase):
+
+    def _make_simplefile(self, filename, content):
+        fileobj = tempfile.NamedTemporaryFile()
+        fileobj.write(content)
+        fileobj.flush()
+        return fileobj
+
+    def _make_memfile(self, filename, content):
+        return InMemoryUploadedFile(
+            file=six.BytesIO(content),
+            field_name='test_field',
+            name='_save_new_file.txt',
+            content_type='text/plain',
+            size=0,
+            charset='utf8',
+        )
+
+    def _make_tempfile(self, filename, content):
+        fileobj = TemporaryUploadedFile(
+            name=filename + ".tempfile",
+            content_type='text/plain',
+            size=0,
+            charset='utf8',
+        )
+        fileobj.write(content)
+        fileobj.flush()
+        return fileobj
+
+    def test_save_simplefile_ok(self):
+        filename = self.session_id + '_save_new_file.txt'
+        content = six.b('test content one')
+
+        fileobj = self._make_simplefile(filename, content)
+        self.storage.save(filename, fileobj)
+        with self.storage.open(filename) as f:
+            self.assertEqual(f.read(), content)
+
+    def test_save_simplefile_seeked_ok(self):
+        filename = self.session_id + '_save_new_memsekfile.txt'
+        content = six.b('test content one')
+
+        fileobj = self._make_simplefile(filename, content)
+        fileobj.seek(3)
+
+        self.storage.save(filename, fileobj)
+        with self.storage.open(filename) as f:
+            self.assertEqual(f.read(), content)
+
+    def test_save_memoryfile_ok(self):
+        filename = self.session_id + '_save_new_file.txt'
+        content = six.b('test content one')
+
+        fileobj = self._make_memfile(filename, content)
+        self.storage.save(filename, fileobj)
+        with self.storage.open(filename) as f:
+            self.assertEqual(f.read(), content)
+
+    def test_save_tempfile_ok(self):
+        filename = self.session_id + '_save_new_file.txt'
+        content = six.b('test content')
+        fileobj = self._make_tempfile(filename, content)
+        self.storage.save(filename, fileobj)
+
+        with self.storage.open(filename) as f:
+            self.assertEqual(f.read(), content)
+
+    def test_save_memoryfile_seeked_ok(self):
+        filename = self.session_id + '_save_new_file.txt'
+        content = six.b('test content one')
+
+        fileobj = self._make_memfile(filename, content)
+        fileobj.seek(3)
+
+        self.storage.save(filename, fileobj)
+        with self.storage.open(filename) as f:
+            self.assertEqual(f.read(), content)
+
+    def test_save_tempfile_seeked_ok(self):
+        filename = self.session_id + '_save_new_file.txt'
+        content = six.b('test content')
+        fileobj = self._make_tempfile(filename, content)
+        fileobj.seek(4)
+
+        self.storage.save(filename, fileobj)
+
+        with self.storage.open(filename) as f:
+            self.assertEqual(f.read(), content)
 
 
 class TestExistsMethod(TestBase):
@@ -160,18 +283,3 @@ class TestOpenMethod(TestBase):
             content = self.storage._open(f.filename, 'r')
             self.assertEquals(first=LAZY_FOX,
                               second=content.read())
-
-
-# class TestGetContainerNameMethod(TestOverrideSettings, TestBase):
-#    """
-#    Tests for `get_container_method` storage method
-#    """
-#    setting = 'SELECTEL_CONTAINER_NAME'
-#    method = 'get_container_name'
-
-    # def mount_requests_adapter(self, prefix, adapter):
-    # *def get_base_url(self):
-
-    # def _name(self, name):
-    # def _open(self, name, mode='rb'):
-    # def _save(self, name, content):

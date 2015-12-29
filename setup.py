@@ -11,7 +11,7 @@ import os
 
 ROOT_PACKAGE = 'django-webdav-storage'
 DIR = os.path.dirname(__file__)
-VERSION = '0.4'
+VERSION = '0.6.1'
 DESCRIPTION = ('This application allows you easily save media and static '
                'files into webdav storage')
 
@@ -45,7 +45,7 @@ if __name__ == '__main__':
           include_package_data=True,
           test_suite='tests.main',
           install_requires=['requests'],
-          tests_require=['requests'],
+          tests_require=['requests', 'contextlib2'],
           zip_safe=False,
           classifiers=[
               'Environment :: Web Environment',
