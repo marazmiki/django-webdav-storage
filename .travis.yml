@@ -1,15 +1,22 @@
 language: python
 
 python:
-  - "2.7"
   - "3.4"
-  - "3.5"
 
 env:
-  - DJANGO=django==1.7.11
-  - DJANGO=django==1.8.7
-  - DJANGO=django==1.9
+  global:
+    - WEBDAV_URL=http://127.0.0.1/
+    - WEBDAV_PUBLIC_URL=http://127.0.0.1/
 
+  matrix:
+    - TOXENV=py27-dj17
+    - TOXENV=py27-dj18
+    - TOXENV=py27-dj19
+    - TOXENV=py34-dj17
+    - TOXENV=py34-dj18
+    - TOXENV=py34-dj19
+    - TOXENV=py35-dj18
+    - TOXENV=py35-dj19
 
 install:
   - sudo apt-add-repository -y ppa:nginx/development
@@ -17,12 +24,9 @@ install:
   - sudo apt-get install -y nginx-extras
   - sudo mkdir /webdav
   - sudo chmod -R 0777 /webdav
+  - echo "127.0.0.1	webdav-server.com" |sudo tee -a /etc/hosts > /dev/null
   - sudo cp ./webdav.conf /etc/nginx/sites-enabled/webdav.conf
   - sudo service nginx restart
-  - pip install -q $DJANGO
-  - pip install -q flake8
-  - pip install -q coveralls coverage
-  - python setup.py install
 
 before_script:
   - make flake8

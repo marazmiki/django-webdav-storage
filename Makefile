@@ -1,3 +1,4 @@
+.PHONY: test release flake8 coverage clean coveralls
 project_name=django_webdav_storage
 
 test:
@@ -12,16 +13,12 @@ release:
 
 
 flake8:
-	flake8 ${project_name}
+	flake8 ${project_name} setup.py tests.py
 
 
 coverage:
-	make clean
-	python setup.py develop
 	coverage run --rcfile=.coveragerc --include=${project_name}/* setup.py test
-	coverage html
 	python setup.py develop --uninstall
-
 
 clean:
 	python setup.py develop --uninstall

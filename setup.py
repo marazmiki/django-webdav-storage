@@ -44,14 +44,17 @@ if __name__ == '__main__':
           packages=find_packages(),
           include_package_data=True,
           test_suite='tests.main',
-          install_requires=['requests'],
-          tests_require=['requests', 'contextlib2'],
+          install_requires=['django', 'requests'],
+          tests_require=[
+              'django', 'requests', 'contextlib2',
+              'coveralls', 'flake8', 'coverage'
+          ],
           zip_safe=False,
           classifiers=[
               'Environment :: Web Environment',
               'Programming Language :: Python :: 2.7',
               'Programming Language :: Python :: 3.3',
               'Programming Language :: Python :: 3.4',
+              'Programming Language :: Python :: 3.5',
               'Framework :: Django'
-          ],
-    )
+          ])
