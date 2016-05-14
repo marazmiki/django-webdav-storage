@@ -1,12 +1,14 @@
 language: python
 
+
 python:
   - "3.5"
 
+
 env:
-  global:
-    - WEBDAV_URL=http://127.0.0.1/
-    - WEBDAV_PUBLIC_URL=http://127.0.0.1/
+  - WEBDAV_URL=http://127.0.0.1/
+  - WEBDAV_PUBLIC_URL=http://127.0.0.1/
+
 
 install:
   - sudo apt-add-repository -y ppa:nginx/development
@@ -25,7 +27,7 @@ before_script:
 
 
 script:
-  - make coverage
+  - tox
 
 
 after_success:

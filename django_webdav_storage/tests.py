@@ -4,16 +4,14 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
-import tempfile
-import requests.exceptions
 from contextlib2 import ExitStack
 from django import test
 from django.core.files.base import ContentFile
 from django_webdav_storage.storage import WebDavStorage
 from django.utils import six
-from django.core.files.uploadedfile import (
-    InMemoryUploadedFile, TemporaryUploadedFile,
-)
+from django.core.files import uploadedfile
+import tempfile
+import requests.exceptions
 import uuid
 import os
 
@@ -104,7 +102,7 @@ class TestSaveMethod(TestBase):
         return fileobj
 
     def _make_memfile(self, filename, content):
-        return InMemoryUploadedFile(
+        return uploadedfile.InMemoryUploadedFile(
             file=six.BytesIO(content),
             field_name='test_field',
             name='_save_new_file.txt',
@@ -114,7 +112,7 @@ class TestSaveMethod(TestBase):
         )
 
     def _make_tempfile(self, filename, content):
-        fileobj = TemporaryUploadedFile(
+        fileobj = uploadedfile.TemporaryUploadedFile(
             name=filename + ".tempfile",
             content_type='text/plain',
             size=0,
