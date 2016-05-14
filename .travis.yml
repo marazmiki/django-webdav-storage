@@ -6,8 +6,9 @@ python:
 
 
 env:
-  - WEBDAV_URL=http://127.0.0.1/
-  - WEBDAV_PUBLIC_URL=http://127.0.0.1/
+  global:
+    - WEBDAV_URL=http://127.0.0.1/
+    - WEBDAV_PUBLIC_URL=http://127.0.0.1/
 
 
 install:
