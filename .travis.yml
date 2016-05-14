@@ -17,7 +17,7 @@ install:
   - echo "127.0.0.1	webdav-server.com" | sudo tee -a /etc/hosts > /dev/null
   - sudo cp ./webdav.conf /etc/nginx/sites-enabled/webdav.conf
   - sudo service nginx restart
-  - pip install -q tox flake coverage coveralls
+  - pip install -q tox flake8 coverage coveralls
 
 
 before_script:
