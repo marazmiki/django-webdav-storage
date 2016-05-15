@@ -5,13 +5,14 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 from contextlib2 import ExitStack
-from django_webdav_storage.tests import TestBase, override_settings
+from django_webdav_storage.tests import TestBase, override
 import requests.exceptions
 
 
-@override_settings(
-    WEBDAV_LISTING_BACKEND='django_webdav_storage.listing.nginx_autoindex',
-)
+NGINX_AUTOINDEX = 'django_webdav_storage.listing.nginx_autoindex'
+
+
+@override(WEBDAV_LISTING_BACKEND=NGINX_AUTOINDEX)
 class TestListdirMethodNginxAutoindex(TestBase):
     def test_listdir_works(self):
         root = 'test-list/'

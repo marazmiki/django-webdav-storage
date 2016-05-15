@@ -7,12 +7,8 @@ from __future__ import division
 from django.core.files.storage import Storage as StorageBase
 from django.core.files.base import ContentFile
 from django.conf import settings
+from django.utils.module_loading import import_string
 import requests
-
-try:
-    from django.utils.module_loading import import_string
-except ImportError:  # Django < 1.7
-    from django.utils.module_loading import import_by_path as import_string
 
 
 def setting(name, default=None):
@@ -77,17 +73,25 @@ class WebDavStorage(StorageBase):
         return ContentFile(self.webdav('GET', name).content)
 
     def _save(self, name, content):
-        headers = {'Content-Length': len(content)}
+        headers = None
 
         if setting('WEBDAV_RECURSIVE_MKCOL', False):
             self.make_collection(name)
 
         if hasattr(content, 'temporary_file_path'):
             with open(content.temporary_file_path(), 'rb') as f:
-                self.webdav('PUT', name, data=f, headers=headers)
+                self.webdav(method='PUT',
+                            name=name,
+                            data=f,
+                            headers=headers
+                            )
         else:
             content.file.seek(0)
-            self.webdav('PUT', name, data=content.file, headers=headers)
+            self.webdav(method='PUT',
+                        name=name,
+                        data=content.file,
+                        headers=headers
+                        )
         return name
 
     def make_collection(self, name):
