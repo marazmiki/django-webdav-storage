@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
-from django_Webdav_storage.tests import TestBase
+from django_webdav_storage.tests import TestBase
 from django.utils import six
 from django.core.files import uploadedfile
 import tempfile
