@@ -1,10 +1,13 @@
-.PHONY: test release flake8 coverage clean coveralls
+.PHONY: test release flake8 coverage clean coveralls fasttest
 project_name=django_webdav_storage
 
 test:
 	python setup.py develop
 	python setup.py test
 	python setup.py develop --uninstall
+
+fasttest:
+	FAILFAST=1 python setup.py test
 
 
 release:

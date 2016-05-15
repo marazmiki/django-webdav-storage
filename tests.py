@@ -19,10 +19,6 @@ settings.configure(
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.middleware.common.CommonMiddleware',
     ),
-    TEMPLATE_LOADERS=(
-        'django.template.loaders.filesystem.Loader',
-        'django.template.loaders.app_directories.Loader',
-    ),
     DATABASES={
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -42,8 +38,9 @@ def main():
         django.setup()
 
     find_pattern = 'django_webdav_storage'
+    failfast = os.getenv('FAILFAST')
 
-    test_runner = get_runner(settings)(verbosity=2, interactive=True)
+    test_runner = get_runner(settings)(verbosity=2, interactive=True, failfast=failfast)
     failed = test_runner.run_tests([find_pattern])
     sys.exit(failed)
 
