@@ -5,7 +5,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 from django.utils import six
-from django_selectel_storage.tests import TestBase, EMPTY_GIF, LAZY_FOX
+from django_webdav_storage.tests import TestBase, EMPTY_GIF, LAZY_FOX
 
 
 class TestSizeMethod(TestBase):
@@ -17,7 +17,7 @@ class TestSizeMethod(TestBase):
             self.storage.size(self.session_id + '_non_exists.txt')
 
     def test_zero_size_file(self):
-        with self.existing_file('zero_size.txt') as f:
+        with self.existing_file('zero_size.txt', content='') as f:
             self.assertEquals(0, self.storage.size(f.filename))
 
     def test_size_binary_file(self):
