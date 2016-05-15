@@ -7,8 +7,8 @@ python:
 
 env:
   global:
-    - WEBDAV_URL=http://webdav-server.com/
-    - WEBDAV_PUBLIC_URL=http://webdav-server.com/
+    - WEBDAV_URL="http://webdav-server.com/"
+    - WEBDAV_PUBLIC_URL="http://webdav-server.com/"
 
 
 install:
@@ -28,7 +28,7 @@ before_script:
 
 
 script:
-  - tox
+  - WEBDAV_URL="${WEBDAV_URL}" WEBDAV_PUBLIC_URL="${WEBDAB_PUBLIC_URL}" tox
 
 
 after_success:
