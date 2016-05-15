@@ -40,7 +40,9 @@ def main():
     find_pattern = 'django_webdav_storage'
     failfast = os.getenv('FAILFAST')
 
-    test_runner = get_runner(settings)(verbosity=2, interactive=True, failfast=failfast)
+    test_runner = get_runner(settings)(verbosity=2,
+                                       interactive=True,
+                                       failfast=failfast)
     failed = test_runner.run_tests([find_pattern])
     sys.exit(failed)
 
