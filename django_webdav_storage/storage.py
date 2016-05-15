@@ -77,16 +77,10 @@ class WebDavStorage(StorageBase):
         return ContentFile(self.webdav('GET', name).content)
 
     def _save(self, name, content):
-        path_list = name.split('/')
-        coll_path = self.webdav_url
-
         headers = {'Content-Length': len(content)}
 
         if setting('WEBDAV_RECURSIVE_MKCOL', False):
-            for directory in path_list[:-1]:
-                self.webdav('MKCOL', '{0}/{1}'.format(coll_path,
-                                                      directory))
-                coll_path += '/{}'.format(directory)
+            self.make_collection(name)
 
         if hasattr(content, 'temporary_file_path'):
             with open(content.temporary_file_path(), 'rb') as f:
@@ -95,6 +89,12 @@ class WebDavStorage(StorageBase):
             content.file.seek(0)
             self.webdav('PUT', name, data=content.file, headers=headers)
         return name
+
+    def make_collection(self, name):
+        coll_path = self.webdav_url
+        for directory in name.split('/')[:-1]:
+            self.webdav('MKCOL', '{0}/{1}'.format(coll_path, directory))
+            coll_path += '/{}'.format(directory)
 
     def delete(self, name):
         try:
