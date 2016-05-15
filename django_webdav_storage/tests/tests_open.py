@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
-from django.test.utils import skipIf
+from unittest import skipIf
 from django.utils import six
 from django_webdav_storage.tests import TestBase, EMPTY_GIF, LAZY_FOX
 
