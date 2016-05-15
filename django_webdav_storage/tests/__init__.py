@@ -44,5 +44,5 @@ class TestBase(test.TestCase):
         self.storage = WebDavStorage()
         self.session_id = uuid.uuid4().hex
 
-    def existing_file(self, filename, content=''):
+    def existing_file(self, filename, content=LAZY_FOX):
         return ExistingFile(self, filename, content)
