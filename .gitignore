@@ -2,6 +2,7 @@
 .tox/
 .env
 .env34
+.virtualenv/
 *.pyc
 *.coverage
 htmlcov
