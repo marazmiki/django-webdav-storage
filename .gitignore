@@ -1,8 +1,9 @@
+.idea/
+.cache/
 .eggs/
 .tox/
-.env
-.env34
 .virtualenv/
+__pycache__
 *.pyc
 *.coverage
 htmlcov
