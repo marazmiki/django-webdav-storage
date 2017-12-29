@@ -1,0 +1,26 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+django = "*"
+requests = "*"
+"e1839a8" = {path = ".", editable = true}
+
+
+[dev-packages]
+
+pytest = "*"
+tox = "*"
+wsgidav = "*"
+"flake8" = "*"
+pytest-cov = "*"
+
+
+[requires]
+
+python_version = "3.6"
