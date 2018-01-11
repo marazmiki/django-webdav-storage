@@ -25,3 +25,7 @@ clean:
 	rm -rf htmlcov
 	rm -f .coverage
 	find . -name "*.pyc" -exec rm -rf {} \;
+
+.PHONY: tox
+tox:
+	tox
