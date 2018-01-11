@@ -9,15 +9,23 @@ env:
   global:
     - WEBDAV_URL="http://webdav-server.com/"
     - WEBDAV_PUBLIC_URL="http://webdav-server.com/"
+    - TOXARG=""
 
 
 matrix:
-  include:
+  exclude:
     - python: 3.5
-      env: TOXARG='-e "py{27,34,35}-dj{10,11}, py{34,35}-dj20"'
+      env: TOXARG=""
 
     - python: 3.6
-      env: TOXARG='-e "py36-dj{10,11,20}"'
+      env: TOXARG=""
+
+  include:
+    - python: 3.5
+      env: TOXARG=-e "py{27,34,35}-dj{10,11}, py{34,35}-dj20"
+
+    - python: 3.6
+      env: TOXARG=-e "py36-dj{10,11,20}"
 
 
 install:
