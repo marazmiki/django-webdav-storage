@@ -1,6 +1,5 @@
 language: python
 
-
 python:
   - 3.5
   - 3.6
@@ -9,42 +8,15 @@ env:
   global:
     - WEBDAV_URL="http://webdav-server.com/"
     - WEBDAV_PUBLIC_URL="http://webdav-server.com/"
-    - TOXARG=""
-
-
-matrix:
-  exclude:
-    - python: 3.5
-      env: TOXARG=""
-
-    - python: 3.6
-      env: TOXARG=""
-
-  include:
-    - python: 3.5
-      env: TOXARG=-e "py{27,34,35}-dj{10,11}, py{34,35}-dj20"
-
-    - python: 3.6
-      env: TOXARG=-e "py36-dj{10,11,20}"
-
 
 install:
-  - sudo apt-add-repository -y ppa:nginx/development
-  - sudo apt-get update
-  - sudo apt-get install -y nginx-extras
-  - sudo mkdir /webdav
-  - sudo chmod -R 0777 /webdav
-  - echo "127.0.0.1	webdav-server.com" | sudo tee -a /etc/hosts > /dev/null
-  - sudo cp ./tests/.configs/nginx/nginx.conf    /etc/nginx/nginx.conf
-  - sudo cp ./tests/.configs/nginx/webdav.conf   /etc/nginx/webdav.conf
-  - sudo service nginx restart
-  - pip install -q tox flake8 coverage coveralls
-
+  - bash .travis/install.sh
 
 before_script:
   - flake8 .
 
 script:
+  - bash .travis/run.sh
   - tox ${TOXARG}
 
 after_success:
