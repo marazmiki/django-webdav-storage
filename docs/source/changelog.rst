@@ -1,6 +1,17 @@
 Change log
 ==========
 
+
+* Using pipenv in the development;
+* Using py.test instead of unittest-based Django test framework;
+* Testing locally in all the supported environments with `tox <https://tox.readthedocs.io/en/latest/>`_
+* Added support for Python 3.6; dropped support for Python 3.3 and 3.2
+* Added support for Django 1.10, 1.11 and 2.0; dropped all the older versions;
+* Added the ``run_wsgidav`` command that creates a developer WebDAV server;
+* Added an example project;
+* Improved documentation;
+
+
 0.6x
 ----
 

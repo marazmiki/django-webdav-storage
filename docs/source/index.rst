@@ -7,7 +7,8 @@ https://github.com/marazmiki/django-webdav-storage
 Description
 -----------
 
-**django-webdav-storage** is pluggable Django application allows you easily save media and static files into your own `WebDAV <https://en.wikipedia.org/wiki/WebDAV>`_-storage.
+**django-webdav-storage** is pluggable Django application allows you easily save
+media and static files into your own `WebDAV <https://en.wikipedia.org/wiki/WebDAV>`_-storage.
 
 
 Table of contents
