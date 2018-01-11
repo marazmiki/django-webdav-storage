@@ -1,14 +1,9 @@
-# coding: utf-8
-
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
+import os
+import requests
+from django.conf import settings
 from django.core.files.storage import Storage as StorageBase
 from django.core.files.base import ContentFile
-from django.conf import settings
 from django.utils.module_loading import import_string
-import requests
 
 
 def setting(name, default=None):
@@ -61,6 +56,7 @@ class WebDavStorage(StorageBase):
         method = method.lower()
         response = getattr(self.requests, method)(url, *args, **kwargs)
         response.raise_for_status()
+
         return response
 
     def get_public_url(self, name):
@@ -70,7 +66,8 @@ class WebDavStorage(StorageBase):
         return self.webdav_url.rstrip('/') + '/' + name.lstrip('/')
 
     def _open(self, name, mode='rb'):
-        return ContentFile(self.webdav('GET', name).content)
+        content = self.webdav('GET', name).content
+        return ContentFile(content, name)
 
     def _save(self, name, content):
         headers = None
@@ -96,9 +93,16 @@ class WebDavStorage(StorageBase):
 
     def make_collection(self, name):
         coll_path = self.webdav_url
+
         for directory in name.split('/')[:-1]:
-            self.webdav('MKCOL', '{0}/{1}'.format(coll_path, directory))
-            coll_path += '/{}'.format(directory)
+            col = os.path.join(coll_path, directory)
+
+            resp = self.requests.head(col)
+            if resp.status_code not in (200, ):
+                resp = self.requests.request('MKCOL', col)
+                resp.raise_for_status()
+
+            coll_path = os.path.join(coll_path, directory)
 
     def delete(self, name):
         try:
@@ -128,5 +132,4 @@ class WebDavStorage(StorageBase):
 
 
 class WebDavStaticStorage(WebDavStorage):
-    container_name = setting('WEBDAV_STATIC_CONTAINER_NAME')
     base_url = setting('WEBDAV_STATIC_BASE_URL')
