@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>A django-webdav-storage demo site</title>
+  <link rel="stylesheet" href="https://cdn.rawgit.com/yegor256/tacit/gh-pages/tacit-css-1.2.0.min.css">
+</head>
+<body>
+  {% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <section>
+    <h2>Last three files</h2>
+    <ul>
+    {% for f in last_3_files %}
+      <li>{{ f }} &ndash; <a href="{{ f.file.url }}">{{ f.file.url }}</a></li>
+    {% empty %}
+      <li>No files yet</li>
+    {% endfor %}
+    </ul>
+  </section>
+
+  <section>
+    <h2>Want to upload your own?</h2>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <p>
+        <input type="submit" value="Upload">
+      </p>
+    </form>
+  </section>
+
+  <section>
+    <h2>How about django admin?</h2>
+    <p>Sure! Try to upload some files from the <a href="/admin/example_app/file/add/">admin</a>.
+      login and password both are <b>admin</b>.
+    </p>
+
+  </section>
+
+  <section><small>A CSS appearance made with <a href="https://yegor256.github.io/tacit/">tacit</a></small></section>
+
+</body>
+</html>
