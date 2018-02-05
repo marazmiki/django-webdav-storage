@@ -22,7 +22,7 @@ def pytest_configure():
         },
         WEBDAV_URL=WEBDAV_URL,
         WEBDAV_PUBLIC_URL=WEBDAV_PUBLIC_URL,
-        WEBDAV_RECURSIVE_MKCOL=False,
+        WEBDAV_RECURSIVE_MKCOL=True,
         WEBDAV_LISTING_BACKEND=(
             'django_webdav_storage.listing.wsgidav_autoindex'
         )
