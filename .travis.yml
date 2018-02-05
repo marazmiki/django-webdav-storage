@@ -10,6 +10,7 @@ env:
   global:
     - WEBDAV_URL="http://webdav-server.com/"
     - WEBDAV_PUBLIC_URL="http://webdav-server.com/"
+    - WEBDAV_LISTING_BACKEND="django_webdav_storage.listing.nginx_autoindex"
 
 install:
   - bash .travis/install.sh

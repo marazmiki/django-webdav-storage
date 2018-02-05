@@ -9,6 +9,7 @@ def pytest_configure():
     WEBDAV_URL = os.getenv('WEBDAV_URL', 'http://127.0.0.1:8080/')
     WEBDAV_PUBLIC_URL = os.getenv('WEBDAV_PUBLIC_URL',
                                   'http://127.0.0.1:8080/')
+    WEBDAV_LISTING_BACKEND = os.getenv('WEBDAV_LISTING_BACKEND')
 
     settings.configure(
         INSTALLED_APPS=['django_webdav_storage'],
@@ -23,9 +24,7 @@ def pytest_configure():
         WEBDAV_URL=WEBDAV_URL,
         WEBDAV_PUBLIC_URL=WEBDAV_PUBLIC_URL,
         WEBDAV_RECURSIVE_MKCOL=True,
-        WEBDAV_LISTING_BACKEND=(
-            'django_webdav_storage.listing.wsgidav_autoindex'
-        )
+        WEBDAV_LISTING_BACKEND=WEBDAV_LISTING_BACKEND
     )
 
 
