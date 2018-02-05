@@ -14,4 +14,3 @@ sudo cp ./tests/.configs/nginx/webdav.conf   /etc/nginx/webdav.conf
 
 sudo nginx -t
 sudo service nginx restart
-pip install tox flake8 coverage coveralls
