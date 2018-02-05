@@ -15,7 +15,8 @@ def url():
     ],
 )
 def test_url(webdav_storage, appendix, arg):
-    assert webdav_storage.get_base_url() + appendix == webdav_storage.url(arg)
+    assert webdav_storage.url('').rstrip('/') + appendix \
+           == webdav_storage.url(arg)
 
 
 @pytest.mark.parametrize(
@@ -34,4 +35,4 @@ def test_url(webdav_storage, appendix, arg):
 def test_get_base_url_trailing_slashes(url, settings, appendix):
     settings.WEBDAV_PUBLIC_URL = url + appendix
     webdav_storage = storage.WebDavStorage()
-    assert url == webdav_storage.get_base_url()
+    assert url == webdav_storage.url('')

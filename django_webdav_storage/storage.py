@@ -130,9 +130,6 @@ class WebDavStorage(StorageBase):
     def url(self, name):
         return self.get_public_url(name)
 
-    def get_base_url(self):
-        return self.url('').rstrip('/')
-
 
 class WebDavStaticStorage(WebDavStorage):
     base_url = setting('WEBDAV_STATIC_BASE_URL')
