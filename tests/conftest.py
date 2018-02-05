@@ -1,8 +1,6 @@
 import os
 import uuid
 import pytest
-from django.core.files.base import ContentFile
-from django.utils import six
 
 
 def pytest_configure():
@@ -44,6 +42,8 @@ def create_file(webdav_storage):
     Creates a file with a unique prefix in the WebDAV storage and
     then deletes the file after the test finished
     """
+    from django.core.files.base import ContentFile
+    from django.utils import six
 
     def inner(filename, content=b'', prefix=''):
         if all((six.PY3, isinstance(content, six.text_type))):
