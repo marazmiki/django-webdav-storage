@@ -55,6 +55,7 @@ class WebDavStorage(StorageBase):
         url = self.get_webdav_url(name)
         method = method.lower()
         response = getattr(self.requests, method)(url, *args, **kwargs)
+        print('webdav ', method, url)
         response.raise_for_status()
 
         return response
