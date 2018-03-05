@@ -14,15 +14,15 @@ django-webdav-storage
     :target: https://coveralls.io/r/marazmiki/django-webdav-storage?branch=master
     :alt: Code coverage percentage
 
-.. image:: https://pypip.in/d/django-webdav-storage/badge.png
+.. image:: https://img.shields.io/pypi/dm/django-webdav-storage.svg
     :target: https://pypi.python.org/pypi/django-webdav-storage
     :alt: Latest version on PyPI
 
-.. image:: https://pypip.in/wheel/django-webdav-storage/badge.svg
+.. image:: https://img.shields.io/pypi/wheel/django-webdav-storage.svg
     :target: https://pypi.python.org/pypi/django-webdav-storage/
     :alt: Wheel Status
 
-.. image:: https://pypip.in/py_versions/django-webdav-storage/badge.png
+.. image:: https://img.shields.io/pypi/pyversions/django-webdav-storage.svg
     :target: https://pypi.python.org/pypi/django-webdav-storage/
     :alt: Supported Python versions
 
