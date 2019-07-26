@@ -29,4 +29,3 @@ class TestPathMethod(TestBase):
             path = self.storage.path(f.filename)
             with open(path) as tmp:
                 self.assertEqual(tmp.read(), LAZY_FOX)
-
