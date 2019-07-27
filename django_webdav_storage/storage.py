@@ -1,9 +1,10 @@
 # coding: utf-8
-
 from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from tempfile import NamedTemporaryFile
+
 from django.core.files.storage import Storage as StorageBase
 from django.core.files.base import ContentFile
 from django.conf import settings
@@ -113,6 +114,14 @@ class WebDavStorage(StorageBase):
             return False
         else:
             return True
+
+    def path(self, name):
+        try:
+            with NamedTemporaryFile(delete=False) as tf:
+                tf.write(self.webdav('GET', name).content)
+                return tf.name
+        except requests.exceptions.HTTPError:
+            pass
 
     def size(self, name):
         try:
