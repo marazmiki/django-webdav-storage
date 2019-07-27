@@ -1,6 +1,5 @@
 import re
 
-
 NGINX_AUTOINDEX_RE = re.compile(r'\<a href="([^"]+)"\>')
 
 
@@ -9,11 +8,11 @@ def nginx_autoindex(storage, path):
 
     response = storage.webdav('GET', path)
 
-    for link in NGINX_AUTOINDEX_RE.findall(response.content):
-        if link == b'../':
+    for link in NGINX_AUTOINDEX_RE.findall(response.content.decode('utf-8')):
+        if link == '../':
             continue
 
-        if link.endswith(b'/'):
+        if link.endswith('/'):
             directories.append(link[:-1])
         else:
             files.append(link)

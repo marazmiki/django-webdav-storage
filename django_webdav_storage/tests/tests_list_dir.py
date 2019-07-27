@@ -28,11 +28,11 @@ class TestListdirMethodNginxAutoindex(TestBase):
 
             self.assertSetEqual(
                 {f for f in files},
-                {b'file.img', b'hello.pdf'}
+                {'file.img', 'hello.pdf'}
             )
             self.assertSetEqual(
                 {d for d in dirs},
-                {b'hello'},
+                {'hello'},
             )
 
     def test_listdir_not_found(self):
