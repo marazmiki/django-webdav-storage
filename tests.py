@@ -11,7 +11,6 @@ sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
 settings.configure(
     TEST_RUNNER='django.test.runner.DiscoverRunner',
-    ROOT_URLCONF='domains.tests.urls',
     INSTALLED_APPS=(
         'django_webdav_storage',
     ),
