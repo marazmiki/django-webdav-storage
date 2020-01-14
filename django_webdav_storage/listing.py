@@ -1,7 +1,7 @@
 import re
 
 
-NGINX_AUTOINDEX_RE = re.compile(b'\<a href="([^"]+)"\>')
+NGINX_AUTOINDEX_RE = re.compile(r'<a href="([^"]+)">')
 
 
 def nginx_autoindex(storage, path):
