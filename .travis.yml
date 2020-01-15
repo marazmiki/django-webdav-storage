@@ -1,4 +1,4 @@
-language: python
+dist: xenial
 
 matrix:
   include:
@@ -7,26 +7,26 @@ matrix:
     - { python: "3.5", env: TOXENV=py35-dj111 }
     - { python: "3.5", env: TOXENV=py35-dj20  }
     - { python: "3.5", env: TOXENV=py35-dj21  }
-    - { python: "3.5", dist: xenial, env: TOXENV=py35-dj22  }
-    - { python: "3.5", dist: xenial, env: TOXENV=py35-dj30  }
+    - { python: "3.5", env: TOXENV=py35-dj22  }
+    - { python: "3.5", env: TOXENV=py35-dj30  }
 
     - { python: "3.6", env: TOXENV=py36-dj111 }
     - { python: "3.6", env: TOXENV=py36-dj20  }
     - { python: "3.6", env: TOXENV=py36-dj21  }
-    - { python: "3.6", dist: xenial, env: TOXENV=py36-dj22  }
-    - { python: "3.6", dist: xenial, env: TOXENV=py36-dj30  }
+    - { python: "3.6", env: TOXENV=py36-dj22  }
+    - { python: "3.6", env: TOXENV=py36-dj30  }
 
-    - { python: "3.7", dist: xenial, env: TOXENV=py37-dj111 }
-    - { python: "3.7", dist: xenial, env: TOXENV=py37-dj20  }
-    - { python: "3.7", dist: xenial, env: TOXENV=py37-dj21  }
-    - { python: "3.7", dist: xenial, env: TOXENV=py37-dj22  }
-    - { python: "3.7", dist: xenial, env: TOXENV=py37-dj30  }
+    - { python: "3.7", env: TOXENV=py37-dj111 }
+    - { python: "3.7", env: TOXENV=py37-dj20  }
+    - { python: "3.7", env: TOXENV=py37-dj21  }
+    - { python: "3.7", env: TOXENV=py37-dj22  }
+    - { python: "3.7", env: TOXENV=py37-dj30  }
 
-    - { python: "3.8", dist: xenial, env: TOXENV=py38-dj111  }
-    - { python: "3.8", dist: xenial, env: TOXENV=py38-dj20   }
-    - { python: "3.8", dist: xenial, env: TOXENV=py38-dj21   }
-    - { python: "3.8", dist: xenial, env: TOXENV=py38-dj22   }
-    - { python: "3.8", dist: xenial, env: TOXENV=py38-dj30   }
+    - { python: "3.8", env: TOXENV=py38-dj111  }
+    - { python: "3.8", env: TOXENV=py38-dj20   }
+    - { python: "3.8", env: TOXENV=py38-dj21   }
+    - { python: "3.8", env: TOXENV=py38-dj22   }
+    - { python: "3.8", env: TOXENV=py38-dj30   }
 
 
 env:
@@ -36,7 +36,8 @@ env:
     - WEBDAV_LISTING_BACKEND="django_webdav_storage.listing.nginx_autoindex"
 
 install:
-  - pip install -q tox tox-travis flake8
+  - pip install -q tox tox-travis poetry
+  - poetry install
 
 script:
   - tox
