@@ -1,12 +1,14 @@
 from multiprocessing import freeze_support
-from django.core.management import BaseCommand, CommandError
-from django.conf import settings
 
+from django.conf import settings
+from django.core.management import BaseCommand, CommandError
 
 try:
-    from wsgidav.server import run_server
+    from wsgidav.fs_dav_provider import FilesystemProvider
+    from wsgidav.wsgidav_app import WsgiDAVApp
+    from wsgiref.simple_server import make_server
 except ImportError:
-    run_server = None
+    WsgiDAVApp = None
 
 
 class Command(BaseCommand):
@@ -29,23 +31,23 @@ class Command(BaseCommand):
                 'You should specify the WEBDAV_WSGIDAV_ROOT in your '
                 'settings module'
             )
-
-        config = run_server.DEFAULT_CONFIG.copy()
-        config.update({
+        config = {
             'verbose': opts['verbosity'],
-            'server': 'wsgiref',
             'provider_mapping': {
-                '/': run_server.FilesystemProvider(root)
+                '/': FilesystemProvider(root)
             },
-        })
-
+            'simple_dc': {
+                'user_mapping': {
+                    '*': True
+                }
+            }
+        }
         if not port_args and not port_config:
             raise CommandError(
                 'You should specify the WEBDAV_WSGIDAV_PORT in your '
                 'settings module or pass the port or addr:port in the '
                 'command line'
             )
-
         if port_args:
             if isinstance(port_args, int):
                 config['port'] = port_args
@@ -56,21 +58,18 @@ class Command(BaseCommand):
                 else:
                     config['host'] = bits[0]
                     config['port'] = bits[1]
-
         config.setdefault('host', '127.0.0.1')
-
         return config
 
     def handle(self, *args, **options):
-        if run_server is None:
+        if WsgiDAVApp is None:
             raise CommandError(
                 'To use this command, you should install WsgiDAV first with'
                 'typing\n\n  pip install wsgidav\n\n'
                 'in your console.'
             )
-
         config = self.configure(options)
-        app = run_server.WsgiDAVApp(config)
-        server = config['server']
+        app = WsgiDAVApp(config)
         freeze_support()
-        run_server._runWsgiref(app, config, server)
+        with make_server(config['host'], config['port'], app) as webdavd:
+            webdavd.serve_forever()

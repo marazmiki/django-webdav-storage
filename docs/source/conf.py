@@ -13,8 +13,8 @@ copyright = u'2017, Mikhail Porokhovnichenko'
 author = 'Mikhail Porokhovnichenko'
 
 # The short X.Y version.
-version = u'0.7'
-release = u'0.7'
+version = u'1.0'
+release = u'1.0'
 
 language = 'en'
 

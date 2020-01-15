@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect
 from django.contrib.messages import success
+from django.shortcuts import redirect, render
 from django.utils.translation import ugettext as _
-from .models import File
+
 from .forms import FileForm
+from .models import File
 
 
 def index(request):
