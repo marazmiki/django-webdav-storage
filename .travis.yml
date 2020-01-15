@@ -38,7 +38,7 @@ env:
 
 install:
   - pip install -q tox tox-travis
-  - python setup.py install
+  - pip install -e .
 
 script:
   - tox
