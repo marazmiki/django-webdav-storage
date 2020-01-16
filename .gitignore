@@ -4,6 +4,7 @@
 .eggs/
 .tox/
 .virtualenv/
+.python-version
 __pycache__
 *.pyc
 *.coverage
