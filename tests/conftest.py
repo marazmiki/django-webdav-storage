@@ -1,5 +1,9 @@
 import os
+import shutil
+import threading
 import uuid
+from tempfile import gettempdir
+
 import pytest
 
 
@@ -28,6 +32,57 @@ def pytest_configure():
     )
 
 
+@pytest.fixture(scope='session')
+def tmp_root_directory():
+    directory = os.path.join(
+        gettempdir(),
+        'django-webdav-storage',
+        str(uuid.uuid4())
+    )
+    os.makedirs(directory)
+    yield directory
+    shutil.rmtree(directory)
+
+
+@pytest.fixture(autouse=True, scope='session')
+def webdav_server(tmp_root_directory):
+    from wsgiref.simple_server import WSGIRequestHandler, make_server
+    from wsgidav.wsgidav_app import WsgiDAVApp
+    from wsgidav.fs_dav_provider import FilesystemProvider
+
+    class MutedWSGIRequestHandler(WSGIRequestHandler):
+        def log_message(self, format, *args):
+            pass
+
+    class WebDavServer:
+        def __init__(self):
+            self.app = WsgiDAVApp({
+                'provider_mapping': {
+                    '/': FilesystemProvider(tmp_root_directory)
+                },
+                'simple_dc': {
+                    'user_mapping': {"*": True}
+                }
+            })
+            self.server = make_server('', 8080, app=self.app,
+                                      handler_class=MutedWSGIRequestHandler)
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc_val, exc_tb):
+            self.server.server_close()
+
+        def run_wsgi(self):
+            self.server.serve_forever()
+
+    with WebDavServer() as srv:
+        thread = threading.Thread(target=srv.run_wsgi)
+        thread.daemon = True
+        thread.start()
+        yield srv
+
+
 @pytest.fixture
 def webdav_storage(settings):
     "Creates a WebDavStorage instance for test purposes"
@@ -38,14 +93,13 @@ def webdav_storage(settings):
 @pytest.fixture
 def create_file(webdav_storage):
     """
-    Creates a file with a unique prefix in the WebDAV storage and
-    then deletes the file after the test finished
+    Creates a file with a unique prefix in the WebDAV storage
     """
     from django.core.files.base import ContentFile
-    from django.utils import six
+    from django_webdav_storage.compat import PY3, TEXT_TYPE
 
     def inner(filename, content=b'', prefix=''):
-        if all((six.PY3, isinstance(content, six.text_type))):
+        if all((PY3, isinstance(content, TEXT_TYPE))):
             content = content.encode('UTF-8')
 
         col = str(uuid.uuid4())
@@ -54,8 +108,6 @@ def create_file(webdav_storage):
         webdav_storage.save(key, ContentFile(content, key))
 
         return key
-
-        webdav_storage.delete(key)
     return inner
 
 

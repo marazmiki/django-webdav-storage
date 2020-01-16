@@ -1,7 +1,9 @@
 import os
 import uuid
+
 import pytest
 import requests.exceptions
+
 from django_webdav_storage import storage
 
 

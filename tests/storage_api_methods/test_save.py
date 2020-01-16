@@ -1,8 +1,11 @@
+import io
 import tempfile
 import uuid
+
 import pytest
-from django.utils import six
 from django.core.files import uploadedfile
+
+from django_webdav_storage.compat import b
 
 
 @pytest.fixture
@@ -24,7 +27,7 @@ def simple_file():
 def in_memory_file():
     def inner(filename, content):
         return uploadedfile.InMemoryUploadedFile(
-            file=six.BytesIO(content),
+            file=io.BytesIO(content),
             field_name='test_field',
             name='_save_new_file.txt',
             content_type='text/plain',
@@ -64,7 +67,7 @@ def test_save_fileobj(webdav_storage, request, file_id, fixture_name):
     request.getfixturevalue(fixture_name)
 
     filename = 'save_new_file_{0}.txt'.format(file_id)
-    content = six.b('test content one')
+    content = b('test content one')
 
     fileobj = request.getfixturevalue(fixture_name)(filename, content)
     webdav_storage.save(filename, fileobj)
@@ -78,7 +81,7 @@ def test_save_seeked_fileobj(webdav_storage, request, file_id, fixture_name):
     request.getfixturevalue(fixture_name)
 
     filename = 'save_new_file_{0}.txt'.format(file_id)
-    content = six.b('test content one')
+    content = b('test content one')
 
     fileobj = request.getfixturevalue(fixture_name)(filename, content)
     fileobj.seek(3)
@@ -93,7 +96,7 @@ def test_no_mkcol(settings, webdav_storage, file_id, simple_file):
     settings.WEBDAV_RECURSIVE_MKCOL = False
 
     filename = 'save_new_file_{0}.txt'.format(file_id)
-    content = six.b('Test')
+    content = b('Test')
 
     fp = simple_file(filename, content)
     webdav_storage.save(filename, fp)
