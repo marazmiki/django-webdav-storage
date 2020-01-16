@@ -1,9 +1,9 @@
 import re
 
 
-NGINX_AUTOINDEX_RE = re.compile(b'\<a href="([^"]+)"\>')
+NGINX_AUTOINDEX_RE = re.compile(b'\<a href="([^"]+)"\>')  # noqa:W605
 WSGIDAV_AUTOINDEX_RE = re.compile(
-    b'<tr><td><a href="([^"]+)" class="">(.*?)</a></td>\s+<td>(.*?)</td>'
+    b'<tr><td><a href="([^"]+)" class="">(.*?)</a></td>\s+<td>(.*?)</td>'  # noqa:W605
 )
 
 
