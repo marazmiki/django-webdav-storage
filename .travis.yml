@@ -35,13 +35,14 @@ env:
     - WEBDAV_URL="http://webdav-server.com/"
     - WEBDAV_PUBLIC_URL="http://webdav-server.com/"
     - WEBDAV_LISTING_BACKEND="django_webdav_storage.listing.nginx_autoindex"
+    - PYTHONPATH=.
 
 install:
   - pip install -q tox tox-travis poetry
   - poetry install
 
 script:
-  - PYTHONPATH=. tox
+  - tox
 
 after_success:
   - coveralls
