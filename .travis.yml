@@ -41,7 +41,7 @@ install:
   - poetry install
 
 script:
-  - tox
+  - PYTHONPATH=. tox
 
 after_success:
   - coveralls
