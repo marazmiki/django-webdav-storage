@@ -37,9 +37,9 @@ env:
     - WEBDAV_LISTING_BACKEND="django_webdav_storage.listing.nginx_autoindex"
 
 install:
-  - bash .travis/install.sh
   - pip install -q tox tox-travis poetry
   - poetry install
+  - bash .travis/install.sh
 
 script:
   - tox
