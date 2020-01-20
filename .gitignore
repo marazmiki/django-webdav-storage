@@ -1,7 +1,11 @@
+.pytest_cache/
+.idea/
+.cache/
 .eggs/
 .tox/
-.env
-.env34
+.virtualenv/
+.python-version
+__pycache__
 *.pyc
 *.coverage
 htmlcov

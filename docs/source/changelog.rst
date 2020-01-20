@@ -1,6 +1,19 @@
 Change log
 ==========
 
+
+* Using ``poetry`` in the development;
+* Using ``py.test`` instead of unittest-based Django test framework;
+* Testing locally in all the supported environments with `tox <https://tox.readthedocs.io/en/latest/>`_
+* Added support for Python ``3.6``, ``3.7`` and ``3.8``;
+* Dropped support for Python ``3.2``, ``3.3`` and ``3.4``
+* Added support for Django ``1.11``, ``2.x`` and ``3.x``;
+* Dropped support of all the older Django versions;
+* Added the ``run_wsgidav`` command that creates a developer WebDAV server;
+* Added an example project;
+* Improved documentation;
+
+
 0.6x
 ----
 

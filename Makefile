@@ -1,35 +1,30 @@
-.PHONY: test release flake8 coverage clean coveralls fasttest
-project_name=django_webdav_storage
+.PHONY: dev
+dev:
+	cd example_project && poetry run ./manage.py runserver
 
-test:
-	python setup.py develop
-	python setup.py test
-	python setup.py develop --uninstall
+.PHONY: check
+check:
+	./setup.py sdist bdist_wheel
+	twine check dist/*
+	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
-fasttest:
-	FAILFAST=1 python setup.py test
-
-
+.PHONY: release
 release:
-	python setup.py sdist --format=zip,bztar,gztar register upload
-	python setup.py bdist_wheel register upload
+	make check
+	twine upload dist/*
+
+.PHONY: push
+push:
+	git push origin master --tags
 
 
-flake8:
-	flake8 ${project_name} setup.py tests.py
+.PHONY: patch
+patch:
+	echo "Making a patch release"
+	poetry bump2version patch
 
 
-coverage:
-	coverage run --rcfile=.coveragerc --include=${project_name}/* setup.py test
-	python setup.py develop --uninstall
-
-clean:
-	python setup.py develop --uninstall
-	rm -rf *.egg-info *.egg
-	rm -rf htmlcov
-	rm -f .coverage
-	find . -name "*.pyc" -exec rm -rf {} \;
-
-
-coveralls:
-	coveralls
+.PHONY: minor
+minor:
+	echo "Making a minor release"
+	poetry run bump2version minor

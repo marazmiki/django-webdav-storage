@@ -1,14 +1,10 @@
-# coding: utf-8
+import os
 
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-from django.core.files.storage import Storage as StorageBase
-from django.core.files.base import ContentFile
-from django.conf import settings
-from django.utils.module_loading import import_string
 import requests
+from django.conf import settings
+from django.core.files.base import ContentFile
+from django.core.files.storage import Storage as StorageBase
+from django.utils.module_loading import import_string
 
 
 def setting(name, default=None):
@@ -20,7 +16,8 @@ class WebDavStorage(StorageBase):
         self.requests = self.get_requests_instance(**kwargs)
         self.webdav_url = self.set_webdav_url(**kwargs)
         self.public_url = self.set_public_url(**kwargs)
-        self.listdir = self.set_listdir(**kwargs)
+        self.listing_backend = kwargs.get('listinb_backend') or \
+            setting('WEBDAV_LISTING_BACKEND')
 
         if not self.webdav_url:
             raise NotImplementedError('Please define webdav url')
@@ -33,25 +30,27 @@ class WebDavStorage(StorageBase):
     def set_public_url(self, **kwargs):
         return kwargs.get('public_url') or setting('WEBDAV_PUBLIC_URL')
 
-    def set_listdir(self, **kwargs):
-        dottedpath = kwargs.get(
-            'listing_backend',
-        ) or setting(
-            'WEBDAV_LISTING_BACKEND'
-        )
-
-        if dottedpath is None:
-            return self.listdir
-
-        listdir = import_string(dottedpath)
-        return lambda path: listdir(self, path)
-
     def listdir(self, path):
-        raise NotImplementedError(
-            'Listing backend not configured. '
-            'Please set WEBDAV_LISTING_BACKEND '
-            'configuration option.'
-        )
+        if not self.listing_backend:
+            raise NotImplementedError(
+                'Listing backend not configured. Please set '
+                'the WEBDAV_LISTING_BACKEND option in your settings module '
+                'or pass the "listing_backend" keyword argument to the '
+                'storage constructor'
+            )
+
+        try:
+            return import_string(self.listing_backend)(self, path)
+        except ImportError:
+            raise NotImplementedError(
+                'Unable import the listing backend '
+                'as a {0}'.format(self.listing_backend)
+            )
+        except TypeError:
+            raise NotImplementedError(
+                'Wrong number of arguments. A listing backend should accept '
+                'two args: 1) a storage instance, 2) requested path'
+            )
 
     def get_requests_instance(self, **kwargs):
         return requests.Session()
@@ -61,6 +60,7 @@ class WebDavStorage(StorageBase):
         method = method.lower()
         response = getattr(self.requests, method)(url, *args, **kwargs)
         response.raise_for_status()
+
         return response
 
     def get_public_url(self, name):
@@ -70,7 +70,8 @@ class WebDavStorage(StorageBase):
         return self.webdav_url.rstrip('/') + '/' + name.lstrip('/')
 
     def _open(self, name, mode='rb'):
-        return ContentFile(self.webdav('GET', name).content)
+        content = self.webdav('GET', name).content
+        return ContentFile(content, name)
 
     def _save(self, name, content):
         headers = None
@@ -96,9 +97,16 @@ class WebDavStorage(StorageBase):
 
     def make_collection(self, name):
         coll_path = self.webdav_url
+
         for directory in name.split('/')[:-1]:
-            self.webdav('MKCOL', '{0}/{1}'.format(coll_path, directory))
-            coll_path += '/{}'.format(directory)
+            col = os.path.join(coll_path, directory, '')
+            resp = self.requests.head(col)
+
+            if not resp.ok:
+                resp = self.requests.request('MKCOL', col)
+                resp.raise_for_status()
+
+            coll_path = os.path.join(coll_path, directory)
 
     def delete(self, name):
         try:
@@ -123,10 +131,6 @@ class WebDavStorage(StorageBase):
     def url(self, name):
         return self.get_public_url(name)
 
-    def get_base_url(self):
-        return self.url('').rstrip('/')
-
 
 class WebDavStaticStorage(WebDavStorage):
-    container_name = setting('WEBDAV_STATIC_CONTAINER_NAME')
     base_url = setting('WEBDAV_STATIC_BASE_URL')
