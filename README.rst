@@ -2,8 +2,11 @@ django-webdav-storage
 =====================
 
 .. image:: https://badge.fury.io/py/django-webdav-storage.svg
-    :target: http://badge.fury.io/py/django-webdav-storage
-    :alt:
+    :target: https://badge.fury.io/py/django-webdav-storage
+
+.. image:: https://img.shields.io/pypi/l/django-webdav-storage
+    :target: 
+    :alt: The project license
 
 .. image:: https://travis-ci.org/marazmiki/django-webdav-storage.svg?branch=master
     :target: https://travis-ci.org/marazmiki/django-webdav-storage
