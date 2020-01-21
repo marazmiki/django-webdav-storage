@@ -4,7 +4,7 @@ dev:
 
 .PHONY: check
 check:
-	./setup.py sdist bdist_wheel
+	poetry build
 	twine check dist/*
 	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 

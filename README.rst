@@ -5,7 +5,7 @@ django-webdav-storage
     :target: https://badge.fury.io/py/django-webdav-storage
 
 .. image:: https://img.shields.io/pypi/l/django-webdav-storage
-    :target: 
+    :target: https://raw.githubusercontent.com/marazmiki/django-webdav-storage/master/LICENSE
     :alt: The project license
 
 .. image:: https://travis-ci.org/marazmiki/django-webdav-storage.svg?branch=master
@@ -43,6 +43,6 @@ Description
 This application allows you easily save media and static files into webdav storage.
 
 Documentation
-------------
+-------------
 Please see full documentation at `Read the Docs <http://django-webdav-storage.readthedocs.io/en/latest/>`_
 
