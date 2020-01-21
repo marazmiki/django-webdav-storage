@@ -29,6 +29,7 @@ classifiers = [
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
 ]
 
+include = ["pyproject.toml"]
 
 [tool.poetry.dependencies]
 python = "^2.7 || ^3"
