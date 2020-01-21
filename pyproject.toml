@@ -3,7 +3,7 @@ name = "django-webdav-storage"
 version = "1.0.0"
 description = "A Django storage backend allowing you to easily save user-generated and static files into your own WebDAV storage rather than a local filesystem, as Django does by default."
 authors = ["Mikhail Porokhovnichenko <marazmiki@gmail.com>"]
-license = "BSD-4-Clause"
+license = "BSD-3-Clause"
 homepage = "https://github.com/marazmiki/django-webdav-storage"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
