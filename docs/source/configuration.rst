@@ -36,7 +36,7 @@ If your webdav backend can't recursively create path,  set the ``WEBDAV_RECURSIV
 
 .. attention::
 
-    The ``WEBDAV_RECURSIVE_MKCOL`` setting must be ``False`` if you use nginx as WebDAV service since ``nginx`` allows you automatically create full path to uloaded file when ``create_full_put_path`` is ``on``.
+    The ``WEBDAV_RECURSIVE_MKCOL`` setting must be ``False`` if you use nginx as WebDAV service since ``nginx`` allows you automatically create full path to uploaded file when ``create_full_put_path`` is ``on``.
 
 
 List support in nginx
