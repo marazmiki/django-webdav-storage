@@ -21,6 +21,16 @@ If you want use HTTP Basic authorization to WebDAV access, you can specify your 
     WEBDAV_URL = 'http://johndoe:secret@my-internal-webdav-server.example.com'
 
 
+Alternatively, if you want to avoid having the password written to log files in case of errors, you can specify authentication settings like this:
+
+.. code:: python
+
+    WEBDAV_BASIC_AUTH = {
+        "user": "dav_user",
+        "password": "secret123456",
+    }
+
+
 Second, set the ``django_webdav_storage.storage.WebDavStorage`` storage class as default storage class:
 
 .. code:: python

@@ -18,6 +18,7 @@ class WebDavStorage(StorageBase):
         self.public_url = self.set_public_url(**kwargs)
         self.listing_backend = kwargs.get('listinb_backend') or \
             setting('WEBDAV_LISTING_BACKEND')
+        self.basic_auth = setting('WEBDAV_BASIC_AUTH')
 
         if not self.webdav_url:
             raise NotImplementedError('Please define webdav url')
@@ -58,6 +59,10 @@ class WebDavStorage(StorageBase):
     def webdav(self, method, name, *args, **kwargs):
         url = self.get_webdav_url(name)
         method = method.lower()
+        if self.basic_auth:
+            if not kwargs:
+                kwargs = {}
+            kwargs["auth"] = (self.basic_auth["user"], self.basic_auth["password"])
         response = getattr(self.requests, method)(url, *args, **kwargs)
         response.raise_for_status()
 
