@@ -2,6 +2,21 @@ Change log
 ==========
 
 
+1.x
+---
+
+1.1
+~~~
+
+* The oldest supported Python version is ``3.6``;
+* Added support for ``Django 4.x``;
+* Using github actions instead of Travis;
+
+
+1.0.0
+~~~~~~
+
+
 * Using ``poetry`` in the development;
 * Using ``py.test`` instead of unittest-based Django test framework;
 * Testing locally in all the supported environments with `tox <https://tox.readthedocs.io/en/latest/>`_

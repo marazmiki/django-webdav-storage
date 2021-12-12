@@ -4,9 +4,10 @@ from django.conf import settings
 from django.core.management import BaseCommand, CommandError
 
 try:
+    from wsgiref.simple_server import make_server
+
     from wsgidav.fs_dav_provider import FilesystemProvider
     from wsgidav.wsgidav_app import WsgiDAVApp
-    from wsgiref.simple_server import make_server
 except ImportError:
     WsgiDAVApp = None
 

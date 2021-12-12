@@ -1,17 +1,12 @@
 import re
 
-from .compat import PY3
-
 NGINX_AUTOINDEX_RE = re.compile(b'<a href="([^"]+)">')
 
 WSGIDAV_REGEX = (
     r'<tr class=".*?">\s*?<td>\s*?'
     r'<a.*?href="(?P<path>[^"]+)".*?>\s*?(?P<name>[^\s]+)\s*?</a>\s*?'
     r'</td>\s*?<td>(?P<type>.*?)</td>'
-)
-
-if PY3:
-    WSGIDAV_REGEX = WSGIDAV_REGEX.encode()
+ ).encode()
 
 WSGIDAV_AUTOINDEX_RE = re.compile(WSGIDAV_REGEX)
 

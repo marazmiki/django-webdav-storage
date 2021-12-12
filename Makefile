@@ -2,29 +2,25 @@
 dev:
 	cd example_project && poetry run ./manage.py runserver
 
-.PHONY: check
-check:
-	poetry build
-	twine check dist/*
-	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
 .PHONY: release
 release:
-	make check
-	twine upload dist/*
+	poetry build
+	poetry publish
+
 
 .PHONY: push
 push:
 	git push origin master --tags
 
 
-.PHONY: patch
-patch:
+.PHONY: patch-version
+patch-version:
 	echo "Making a patch release"
 	poetry bump2version patch
 
 
-.PHONY: minor
-minor:
+.PHONY: minor-version
+minor-version:
 	echo "Making a minor release"
 	poetry run bump2version minor

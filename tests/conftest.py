@@ -47,8 +47,9 @@ def tmp_root_directory():
 @pytest.fixture(autouse=True, scope='session')
 def webdav_server(tmp_root_directory):
     from wsgiref.simple_server import WSGIRequestHandler, make_server
-    from wsgidav.wsgidav_app import WsgiDAVApp
+
     from wsgidav.fs_dav_provider import FilesystemProvider
+    from wsgidav.wsgidav_app import WsgiDAVApp
 
     class MutedWSGIRequestHandler(WSGIRequestHandler):
         def log_message(self, format, *args):
@@ -96,12 +97,10 @@ def create_file(webdav_storage):
     Creates a file with a unique prefix in the WebDAV storage
     """
     from django.core.files.base import ContentFile
-    from django_webdav_storage.compat import PY3, TEXT_TYPE
 
     def inner(filename, content=b'', prefix=''):
-        if all((PY3, isinstance(content, TEXT_TYPE))):
+        if isinstance(content, str):
             content = content.encode('UTF-8')
-
         col = str(uuid.uuid4())
         key = os.path.join(prefix.lstrip('/') or col, filename)
 
